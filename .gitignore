@@ -3,6 +3,7 @@
 *.swp
 
 # sbt specific
+.history
 .cache/
 .history/
 .lib/
