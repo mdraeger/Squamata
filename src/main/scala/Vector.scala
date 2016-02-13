@@ -1,7 +1,5 @@
 package org.draegisoft.math.vectorspace
 
-import math.{pow, sqrt}
-
 import org.draegisoft.math.field.Field
 
 case class Vector[A <: Field[A]] (private val values: scala.collection.immutable.Vector[A]) {
@@ -16,9 +14,19 @@ case class Vector[A <: Field[A]] (private val values: scala.collection.immutable
 }
   def -(that: Vector[A]) = this + -that
 
-  def *(that: Vector[A])(implicit num: Field[A]) = {
+  def *(that: Vector[A])(implicit num: Field[A]): A = {
     val zero = num.zero
     (values, that.values).zipped.map(_*_).foldLeft(zero)(_ + _)
+  }
+
+  def *(that: Matrix[A])(implicit num: Field[A]): Vector[A] = {
+    val rhs = ~that
+    var resultVector = scala.collection.immutable.Vector.empty[A]
+    for (column <- 0 until dim) {
+      val dotProduct = this * rhs(column)
+      resultVector = resultVector :+ dotProduct
+    }
+    new Vector(resultVector)
   }
 
   def unary_- = new Vector(values map (-_))
