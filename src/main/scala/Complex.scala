@@ -14,7 +14,7 @@
  limitations under the License.
 */
 
-package org.draegisoft.squamate.field
+package org.draegisoft.squamata.field
 
 import math.{pow, sqrt}
 
@@ -40,6 +40,11 @@ case class Complex(val re: Double, val im: Double) extends Field[Complex] {
 
   def zero = new Complex(0.0)
   def one = new Complex(1.0)
+
+  override def equals(o: Any) = o match {
+    case that: Complex => !(this - that) <= 1e-16
+    case _ => false
+  }
 
   override def toString() = 
     this match {

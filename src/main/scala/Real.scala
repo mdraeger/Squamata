@@ -14,7 +14,7 @@
  limitations under the License.
 */
 
-package org.draegisoft.squamate.field
+package org.draegisoft.squamata.field
 
 case class Real(val re: Double) extends Field[Real] {
 
@@ -32,6 +32,11 @@ case class Real(val re: Double) extends Field[Real] {
 
   def zero = new Real(0.0)
   def one = new Real(1.0)
+
+  override def equals(o: Any) = o match {
+    case that: Real => re - that.re < 1e-14
+    case _ => false
+  }
 
   override def toString() = re.toString
 }

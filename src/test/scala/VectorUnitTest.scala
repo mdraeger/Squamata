@@ -14,16 +14,11 @@
  limitations under the License.
 */
 
-package org.draegisoft.squamata.field
+package org.draegisoft.squamata.vectorspace
 
-trait Field[A] { self: A =>
-  def +(that: A): A
-  def -(that: A): A
-  def *(that: A): A
-  def /(that: A): A
-  def unary_- : A
-  def inv : A
+import org.draegisoft.squamata.UnitTest
 
-  def zero: A
-  def one: A
+import org.scalatest.{FlatSpec, Matchers}
+
+class VectorUnitTest extends UnitTest("Vector") {
 }

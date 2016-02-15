@@ -14,9 +14,9 @@
  limitations under the License.
 */
 
-package org.draegisoft.squamate.vectorspace
+package org.draegisoft.squamata.vectorspace
 
-import org.draegisoft.squamate.field.Field
+import org.draegisoft.squamata.field.Field
 
 case class Vector[A <: Field[A]] (private val values: scala.collection.immutable.Vector[A]) {
   val dim = values.length

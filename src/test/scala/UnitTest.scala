@@ -14,16 +14,10 @@
  limitations under the License.
 */
 
-package org.draegisoft.squamata.field
+package org.draegisoft.squamata
 
-trait Field[A] { self: A =>
-  def +(that: A): A
-  def -(that: A): A
-  def *(that: A): A
-  def /(that: A): A
-  def unary_- : A
-  def inv : A
+import org.scalatest.{FlatSpec, Matchers}
 
-  def zero: A
-  def one: A
+abstract class UnitTest(component: String) extends FlatSpec with Matchers {
+  behavior of component
 }

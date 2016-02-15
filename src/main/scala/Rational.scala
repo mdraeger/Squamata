@@ -14,11 +14,16 @@
  limitations under the License.
 */
 
-package org.draegisoft.squamate.field
+package org.draegisoft.squamata.field
 
 case class Rational(val a: Int, val b: Int) extends Field[Rational] {
-  val numerator = a / gcd(a,b)
-  val denominator = b / gcd(a,b)
+  require(b != 0, "The denominator must not be zero!")
+  
+  val (numerator, denominator) = {
+    val g = gcd(a.abs,b.abs)
+    if (b < 0) (-a / g, b.abs /g)
+    else (a / g, b.abs / g)
+  }
 
   private def gcd(m: Int, n: Int): Int =
     if (n == 0) m else gcd(n, m%n)
@@ -41,6 +46,11 @@ case class Rational(val a: Int, val b: Int) extends Field[Rational] {
 
   def zero = new Rational(0, 1)
   def one = new Rational(1, 1)
+
+  override def equals(that: Any) = that match {
+    case r: Rational => numerator == r.numerator && denominator == r.denominator
+    case _ => false
+  }
 
   override def toString() = 
     if (numerator == 0) "0" 

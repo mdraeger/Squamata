@@ -14,7 +14,7 @@
  limitations under the License.
 */
 
-package org.draegisoft.squamate.field
+package org.draegisoft.squamata.field
 
 case class GF2(val value: Int) extends Field[GF2] {
   require(value == 0 || value == 1, "Only 0 or 1 are allowed values for GF2!")
