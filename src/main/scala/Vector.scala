@@ -42,12 +42,12 @@ case class Vector[A <: Field[A]] (private val values: scala.collection.immutable
       val dotProduct = this * rhs(column)
       resultVector = resultVector :+ dotProduct
     }
-    new Vector(resultVector)
+    Vector(resultVector)
   }
 
-  def unary_- = new Vector(values map (-_))
+  def unary_- = Vector(values map (-_))
 
-  def scaleBy(scalar: A) = new Vector(values map (_ * scalar))
+  def scaleBy(scalar: A) = Vector(values map (_ * scalar))
 
   override def toString() = "[" + values.mkString(", ") + "]"
 }
@@ -56,8 +56,11 @@ object Vector {
   def apply[A <: Field[A]](values:A*) = new Vector(values.toVector)
 
   def zeros[A <: Field[A]](length: Int)(implicit num:Field[A]): Vector[A] =
-    new Vector(scala.collection.immutable.Vector.fill(length) { num.zero })
+    Vector(scala.collection.immutable.Vector.fill(length) { num.zero })
 
   def ones[A <: Field[A]](length: Int)(implicit num:Field[A]): Vector[A] =
-    new Vector(scala.collection.immutable.Vector.fill(length) { num.one })
+    Vector(scala.collection.immutable.Vector.fill(length) { num.one })
+
+  def unit[A <: Field[A]](index:Int, length: Int)(implicit num:Field[A]): Vector[A] =
+    Vector(scala.collection.immutable.Vector.fill(length) { num.zero } .updated(index, num.one))
 }

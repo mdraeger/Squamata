@@ -30,7 +30,14 @@ case class Complex(val re: Double, val im: Double) extends Field[Complex] {
   def /(that: Complex) = this * that.inv
   def unary_+ = this
   def unary_~ = new Complex(re, -im) // conjugate
-  def unary_- = new Complex(-re, -im)
+  // implementaion of double contains a 'sign' bit
+  def unary_- = 
+    this match {
+      case Complex(0,0) => this
+      case Complex(re,0) => Complex(-re)
+      case Complex(0,im) => Complex(0,-im)
+      case _ => Complex(-re, -im)
+    }
   def unary_! = modulus
   def inv = {
     require(re != 0 || im != 0, "The denominator must not be zero!")
@@ -49,8 +56,8 @@ case class Complex(val re: Double, val im: Double) extends Field[Complex] {
   override def toString() = 
     this match {
       case Complex.i => "i"
-      case Complex(re, 0) => re.toString
-      case Complex(0, im) => im.toString + "*i"
+      case Complex(re, 0) => if (re < 0) "-" + -re else re.abs.toString
+      case Complex(0, im) => (if (im < 0) "-" + -im else im.abs.toString) + "*i"
       case _ => asString
     }
 }

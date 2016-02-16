@@ -77,9 +77,12 @@ case class Matrix[A <: Field[A]] (private val rows: scala.collection.immutable.V
 object Matrix {
   def apply[A <: Field[A]](rows: Vector[A]*) = new Matrix(rows.toVector)
 
-  def zeros[A <: Field[A]](length: Int)(implicit num:Field[A]): Matrix[A] = ???
+  def zeros[A <: Field[A]](length: Int)(implicit num:Field[A]): Matrix[A] = 
+    Matrix(scala.collection.immutable.Vector.fill(length) { Vector.zeros(length) })
 
-  def ones[A <: Field[A]](length: Int)(implicit num:Field[A]): Matrix[A] = ???
+  def ones[A <: Field[A]](length: Int)(implicit num:Field[A]): Matrix[A] = 
+    Matrix(scala.collection.immutable.Vector.fill(length) { Vector.ones(length) })
 
-  def identity[A <: Field[A]](dim: Int)(implicit num:Field[A]): Matrix[A] = ???
+  def identity[A <: Field[A]](dim: Int)(implicit num:Field[A]): Matrix[A] = 
+    Matrix( (0 until dim).map(index => Vector.unit(index, dim)).toVector)
 }

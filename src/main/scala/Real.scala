@@ -28,7 +28,8 @@ case class Real(val re: Double) extends Field[Real] {
     require(re != 0, "The denominator must not be zero!")
     new Real(1.0/ re) // multiplicative inverse
   }
-  def unary_- = new Real(-re)
+  // implementaion of double contains a 'sign' bit
+  def unary_- = if (re == 0.0) this else Real(-re)
 
   def zero = new Real(0.0)
   def one = new Real(1.0)
