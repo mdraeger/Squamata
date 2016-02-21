@@ -20,10 +20,10 @@ case class GF2(val value: Int) extends Field[GF2] {
   require(value == 0 || value == 1, "Only 0 or 1 are allowed values for GF2!")
 
   def +(that: GF2) = {
-    new GF2((value + that.value) % 2)
+    new GF2(value ^ that.value)
   }
   def -(that: GF2) = this + -that
-  def *(that: GF2) = new GF2(value * that.value)
+  def *(that: GF2) = new GF2(value & that.value)
   def /(that: GF2) = this * that.inv
 
   def unary_+ = this
@@ -35,6 +35,11 @@ case class GF2(val value: Int) extends Field[GF2] {
 
   def zero = new GF2(0)
   def one = new GF2(1)
+
+  override def equals(o: Any) = o match {
+    case that: GF2 => value == that.value
+    case _ => false
+  }
 
   override def toString() = value.toString
 }

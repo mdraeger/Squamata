@@ -49,7 +49,7 @@ case class Complex(val re: Double, val im: Double) extends Field[Complex] {
   def one = new Complex(1.0)
 
   override def equals(o: Any) = o match {
-    case that: Complex => !(this - that) <= 1e-16
+    case that: Complex => !(this - that) <= 1e-14
     case _ => false
   }
 

@@ -35,7 +35,7 @@ case class Real(val re: Double) extends Field[Real] {
   def one = new Real(1.0)
 
   override def equals(o: Any) = o match {
-    case that: Real => re - that.re < 1e-14
+    case that: Real => (re - that.re).abs < 1e-14
     case _ => false
   }
 
