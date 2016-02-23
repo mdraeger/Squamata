@@ -46,11 +46,11 @@ case class SparseVector[A <: Field[A]] (val dim: Int, private val values: Map[In
                                    .toMap)
   }
 
-  def unary_- = SparseVector(dim, values.map { case (index, value) => index -> -value })
+  def unary_- = this.scaleBy(-num.one)
 
-  def scaleBy(scalar: A) = SparseVector(dim, values.map { case (index, value) => index -> value*scalar })
+  def scaleBy(scalar: A) = SparseVector(dim, values.mapValues(value => scalar*value))
 
-  override def toString() = "[" + values.mkString(", ") + "]"
+  override def toString() = values.mkString("[", ", ", "]")
 }
 
 object SparseVector {

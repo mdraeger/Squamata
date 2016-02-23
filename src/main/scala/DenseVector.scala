@@ -51,7 +51,7 @@ case class DenseVector[A <: Field[A]] (private val values: scala.collection.immu
 
   def scaleBy(scalar: A) = DenseVector(values map (_ * scalar))
 
-  override def toString() = "[" + values.mkString(", ") + "]"
+  override def toString() = values.mkString("[", ", ", "]")
 }
 
 object DenseVector {

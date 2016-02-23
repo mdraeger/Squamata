@@ -74,7 +74,7 @@ case class DenseMatrix[A <: Field[A]] (private val rows: scala.collection.immuta
 
   def scaleBy(scalar: A) = new DenseMatrix(rows map (v => v.scaleBy(scalar)))
 
-  override def toString() = "[" + rows.mkString(", ") + "]"
+  override def toString() = rows.mkString("[", ", ", "]")
 }
 
 object DenseMatrix {
