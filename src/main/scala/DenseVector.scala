@@ -51,6 +51,12 @@ case class DenseVector[A <: Field[A]] (private val values: scala.collection.immu
 
   def scaleBy(scalar: A) = DenseVector(values map (_ * scalar))
 
+  override def equals(o: Any) = o match {
+    case that: Vector[A] => dim == that.dim &&
+                            (0 until dim).forall(index => this(index) == that(index))
+    case _ => false
+  }
+
   override def toString() = values.mkString("[", ", ", "]")
 }
 

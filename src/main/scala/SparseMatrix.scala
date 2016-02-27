@@ -57,12 +57,22 @@ case class SparseMatrix[A <: Field[A]] (val dim: Int, private val rows: Map[Int,
                                      .filter { case (index, value) => value != num.zero } 
                                      .toMap
         SparseVector(dim, newColumn)
-      }).filter { case (index, value) => value != sparseZeroVector }.toMap
+    }).filter { case (index, value) => value != sparseZeroVector }.toMap
     SparseMatrix(dim, columns)
   }
   def unary_- = this.scaleBy(-num.one)
 
   def scaleBy(scalar: A) = SparseMatrix(dim, rows.mapValues (v => v.scaleBy(scalar)))
+
+  override def equals(o: Any) = o match {
+    case that: SparseMatrix[A] => dim == that.dim &&
+                                  (rows.keySet ++ that.rows.keySet).forall(
+                                    key => this(key) == that(key)
+                                  )
+    case that: Matrix[A] => dim == that.dim &&
+                            (0 until dim).forall(index => this(index) == that(index))
+    case _ => false
+  }
 
   override def toString() = rows.mkString("[", ", ", "]")
 }

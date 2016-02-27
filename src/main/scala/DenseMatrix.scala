@@ -74,6 +74,12 @@ case class DenseMatrix[A <: Field[A]] (private val rows: scala.collection.immuta
 
   def scaleBy(scalar: A) = new DenseMatrix(rows map (v => v.scaleBy(scalar)))
 
+  override def equals(o: Any) = o match {
+    case that: Matrix[A] => dim == that.dim &&
+                            (0 until dim).forall(index => this(index) == that(index))
+    case _ => false
+  }
+
   override def toString() = rows.mkString("[", ", ", "]")
 }
 

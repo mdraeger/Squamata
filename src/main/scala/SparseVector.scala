@@ -50,6 +50,16 @@ case class SparseVector[A <: Field[A]] (val dim: Int, private val values: Map[In
 
   def scaleBy(scalar: A) = SparseVector(dim, values.mapValues(value => scalar*value))
 
+  override def equals(o: Any) = o match {
+    case that: SparseVector[A] => dim == that.dim &&
+                                  (values.keySet ++ that.values.keySet).forall(
+                                    key => this(key) == that(key)
+                                  )
+    case that: Vector[A] => dim == that.dim &&
+                            (0 until dim).forall(index => this(index) == that(index))
+    case _ => false
+  }
+
   override def toString() = values.mkString("[", ", ", "]")
 }
 
