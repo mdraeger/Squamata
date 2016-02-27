@@ -34,6 +34,7 @@ case class DenseMatrix[A <: Field[A]] (private val rows: scala.collection.immuta
   def -(that: Matrix[A]) = this + -that
 
   def *(that: Matrix[A]) = {
+    require(dim == that.dim, "Dimensions of the matrices don't match!")
     val rhs = ~that
     var newRows = scala.collection.immutable.Vector.empty[DenseVector[A]]
     for (row <- 0 until dim) {
@@ -47,6 +48,7 @@ case class DenseMatrix[A <: Field[A]] (private val rows: scala.collection.immuta
   }
 
   def *(that: Vector[A]) = {
+    require(dim == that.dim, "Dimensions of the matrices don't match!")
     var resultVector = scala.collection.immutable.Vector.empty[A]
     for (row <- 0 until dim) {
       val dotProduct = rows(row) * that

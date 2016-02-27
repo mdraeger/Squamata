@@ -38,6 +38,7 @@ case class DenseVector[A <: Field[A]] (private val values: scala.collection.immu
   }
 
   def *(that: Matrix[A]): Vector[A] = {
+    require(dim == that.dim, "Dimensions of the matrices don't match!")
     val rhs = ~that
     var resultDenseVector = scala.collection.immutable.Vector.empty[A]
     for (column <- 0 until dim) {

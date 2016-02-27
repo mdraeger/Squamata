@@ -40,6 +40,7 @@ case class SparseVector[A <: Field[A]] (val dim: Int, private val values: Map[In
   }
 
   def *(that: Matrix[A]): SparseVector[A] = {
+    require(dim == that.dim, "Dimensions of the matrices don't match!")
     val rhs = ~that
     SparseVector(dim, (0 until dim).map(column => (column, this * rhs(column)))
                                    .filter{ case (i, v) => v != num.zero }

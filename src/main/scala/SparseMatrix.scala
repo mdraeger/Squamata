@@ -36,6 +36,7 @@ case class SparseMatrix[A <: Field[A]] (val dim: Int, private val rows: Map[Int,
   }
   def -(that: Matrix[A]) = this + -that
   def *(that: Matrix[A]): SparseMatrix[A] = {
+    require(dim == that.dim, "Dimensions of the matrices don't match!")
     val rhs = ~that
     val newRows = (0 until dim).map(i => i -> this * rhs(i))
                                .filter{ case (i, vec) => vec != sparseZeroVector }
@@ -45,8 +46,10 @@ case class SparseMatrix[A <: Field[A]] (val dim: Int, private val rows: Map[Int,
   /**
   * @param that: Vector[A] is assumed to be a column vector
   */
-  def *(that: Vector[A]): SparseVector[A] = 
+  def *(that: Vector[A]): SparseVector[A] = {
+    require(dim == that.dim, "Dimensions of the matrices don't match!")
     SparseVector(dim, rows.mapValues(v => v * that).filter{ case (i,v) => v != num.zero })
+  }
 
   /**
    * The transpose of the matrix
