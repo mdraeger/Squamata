@@ -16,10 +16,10 @@
 
 package org.draegisoft.squamata.field
 
-import math.{pow, sqrt}
+import math.{hypot, pow}
 
 case class Complex(val re: Double, val im: Double) extends Field[Complex] {
-  private val modulus = sqrt(pow(re, 2) + pow(im, 2))
+  private val modulus = hypot(re, im)
   private lazy val asString = re + (if (im < 0) "-" + -im else "+" + im) + "*i"
 
   def this(re: Double) = this(re, 0)
