@@ -1,5 +1,5 @@
-package org.draegisoft.squamata
-package object examples{
+package org.draegisoft.squamata.examples
+package object hill{
 
   /**
   * Multiply polynomials a and b modulo an irreducible polynomial modulus

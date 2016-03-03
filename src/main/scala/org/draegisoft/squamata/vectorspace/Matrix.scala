@@ -38,4 +38,5 @@ trait Matrix[A <: Field[A]] {
 
   def scaleBy(scalar: A): Matrix[A]
   def updated(index: Int, vector: Vector[A]): Matrix[A]
+  def updated(row: Int, column: Int, elem: A): Matrix[A]
 }

@@ -76,8 +76,10 @@ case class DenseMatrix[A <: Field[A]] (private val rows: scala.collection.immuta
 
   def inverse = {
     val unitVectors = (0 until dim).toList.map(i => (DenseVector.unit(i, dim): DenseVector[A]))
-    val x: A = num.zero // just providing `num` didn't work, leading to a type mismatch. `num` and `num.zero` have the same type, though
-    solve(this, unitVectors)(x) map (list => ~DenseMatrix(list.toVector.map(v => v.asInstanceOf[DenseVector[A]])))
+    // just providing `num` didn't work, leading to a type mismatch. `num` and `num.zero` have the same type, though
+    solve(this, unitVectors)(num.zero) map (
+      list => ~DenseMatrix(list.toVector.map(v => v.asInstanceOf[DenseVector[A]]))
+    )
   }
 
   def scaleBy(scalar: A) = new DenseMatrix(rows map (v => v.scaleBy(scalar)))
@@ -86,6 +88,8 @@ case class DenseMatrix[A <: Field[A]] (private val rows: scala.collection.immuta
     case v: DenseVector[A] => DenseMatrix(rows updated (index, v))
     case _ => throw new IllegalArgumentException("Can only place DenseVector[A] inside DenseMatrix[A]")
   }
+
+  def updated(row: Int, column: Int, elem: A) = this.updated(row, this(row).updated(column, elem))
 
   override def equals(o: Any) = o match {
     case that: Matrix[A] => dim == that.dim &&

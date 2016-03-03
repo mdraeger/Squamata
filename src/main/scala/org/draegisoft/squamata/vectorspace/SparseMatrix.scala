@@ -72,8 +72,8 @@ case class SparseMatrix[A <: Field[A]] (val dim: Int, private val rows: Map[Int,
   */
   def inverse = {
     val unitVectors = (0 until dim).toList.map(i => (SparseVector.unit(i, dim): SparseVector[A]))
-    val x: A = num.zero // just providing `num` didn't work, leading to a type mismatch. `num` and `num.zero` have the same type, though
-    solve(this, unitVectors)(x) map (list => {
+    // just providing `num` didn't work, leading to a type mismatch. `num` and `num.zero` have the same type, though
+    solve(this, unitVectors)(num.zero) map (list => {
       ~SparseMatrix(dim, (0 until dim).map(i => i -> list(i).asInstanceOf[SparseVector[A]]).toMap)
     })
   }
@@ -85,6 +85,8 @@ case class SparseMatrix[A <: Field[A]] (val dim: Int, private val rows: Map[Int,
                                else SparseMatrix(dim, rows updated (index, v))
     case _ => throw new IllegalArgumentException("Can only place SparseVector[A] inside SparseMatrix[A]")
   }
+
+  def updated(row: Int, column: Int, elem: A) = this.updated(row, this(row).updated(column, elem))
 
   override def equals(o: Any) = o match {
     case that: SparseMatrix[A] => dim == that.dim &&

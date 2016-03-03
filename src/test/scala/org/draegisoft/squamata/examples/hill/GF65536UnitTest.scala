@@ -14,7 +14,7 @@
  limitations under the License.
 */
 
-package org.draegisoft.squamata.examples
+package org.draegisoft.squamata.examples.hill
 
 import org.draegisoft.squamata.UnitTest
 
