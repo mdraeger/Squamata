@@ -17,15 +17,12 @@ package object vectorspace{
       // if we got the zero vector, return with no success
       if((0 until m.dim).forall(j => m(i,j) == num.zero)) return None
 
-      // we might have to switch rows, if we encounter zero in the ith column. Implement that later
-      while (m(i,i) == num.zero) {
-        var j = i+1
-        if (j == m.dim) return None // The linear systen is underdetermined
-        else if (m(j,i) != num.zero){
-          m = switch(m, i, j)
-          vlist = vlist map (v => switch(v, i, j))
+      // we might have to switch rows, if we encounter zero in the ith column. 
+      if (m(i,i) == num.zero) {
+        switchRowsIfNecessary(m, vlist, i) match {
+          case Some((mat, list)) => m = mat; vlist = list
+          case _ => return None
         }
-        j += 1
       }
 
       val scaleFactor = num.one / m(i,i)
@@ -64,6 +61,23 @@ package object vectorspace{
     }
     Some(vlist)
   }
+
+  private def switchRowsIfNecessary[A <: Field[A]]
+                                   (matrix: Matrix[A], vectorList: List[Vector[A]], row: Int)
+                                   (implicit num: A): Option[(Matrix[A], List[Vector[A]])] = {
+    var m = matrix; var vlist = vectorList
+    while (m(row,row) == num.zero) {
+      var j = row+1
+      if (j == m.dim) return None // The linear systen is underdetermined
+      else if (m(j,row) != num.zero){
+        m = switch(m, row, j)
+        vlist = vlist map (v => switch(v, row, j))
+      }
+      j += 1
+    }
+    Some((m, vlist))
+  }
+
 
   private def subtractScaledRow[A <: Field[A]](m: Matrix[A], vlist: List[Vector[A]], factor: A, row: Int, column: Int) = {
     val newMatrix = m.updated(column, m(column) - m(row).scaleBy(factor))
