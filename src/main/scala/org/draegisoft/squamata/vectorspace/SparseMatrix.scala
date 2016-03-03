@@ -64,6 +64,19 @@ case class SparseMatrix[A <: Field[A]] (val dim: Int, private val rows: Map[Int,
     SparseMatrix(dim, columns)
   }
   def unary_- = this.scaleBy(-num.one)
+  
+  /**
+  * Careful here! The method is implemented for completeness reasons. However, 
+  * the inverse of a sparse matrix will be dense in most cases.
+  * Furthermore, there is a good chance that the inverse doesn't exist at all.
+  */
+  def inverse = {
+    val unitVectors = (0 until dim).toList.map(i => (SparseVector.unit(i, dim): SparseVector[A]))
+    val x: A = num.zero // just providing `num` didn't work, leading to a type mismatch. `num` and `num.zero` have the same type, though
+    solve(this, unitVectors)(x) map (list => {
+      ~SparseMatrix(dim, (0 until dim).map(i => i -> list(i).asInstanceOf[SparseVector[A]]).toMap)
+    })
+  }
 
   def scaleBy(scalar: A) = SparseMatrix(dim, rows.mapValues (v => v.scaleBy(scalar)))
 

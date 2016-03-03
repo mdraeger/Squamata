@@ -74,6 +74,12 @@ case class DenseMatrix[A <: Field[A]] (private val rows: scala.collection.immuta
 
   def unary_- = new DenseMatrix(rows map (-_))
 
+  def inverse = {
+    val unitVectors = (0 until dim).toList.map(i => (DenseVector.unit(i, dim): DenseVector[A]))
+    val x: A = num.zero // just providing `num` didn't work, leading to a type mismatch. `num` and `num.zero` have the same type, though
+    solve(this, unitVectors)(x) map (list => ~DenseMatrix(list.toVector.map(v => v.asInstanceOf[DenseVector[A]])))
+  }
+
   def scaleBy(scalar: A) = new DenseMatrix(rows map (v => v.scaleBy(scalar)))
 
   def updated(index: Int, vector: Vector[A]) = vector match {

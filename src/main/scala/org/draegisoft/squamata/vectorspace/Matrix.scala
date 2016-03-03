@@ -34,6 +34,8 @@ trait Matrix[A <: Field[A]] {
   def unary_~ : Matrix[A]
   def unary_- : Matrix[A]
 
+  def inverse : Option[Matrix[A]]
+
   def scaleBy(scalar: A): Matrix[A]
   def updated(index: Int, vector: Vector[A]): Matrix[A]
 }
