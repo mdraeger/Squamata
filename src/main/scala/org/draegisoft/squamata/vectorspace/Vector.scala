@@ -29,4 +29,5 @@ trait Vector[A <: Field[A]] {
   def unary_- : Vector[A]
 
   def scaleBy(scalar: A): Vector[A]
+  def updated(index: Int, scalar: A): Vector[A]
 }

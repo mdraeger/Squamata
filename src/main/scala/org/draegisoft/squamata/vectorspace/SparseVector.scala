@@ -51,6 +51,12 @@ case class SparseVector[A <: Field[A]] (val dim: Int, private val values: Map[In
 
   def scaleBy(scalar: A) = SparseVector(dim, values.mapValues(value => scalar*value))
 
+  def updated(index: Int, scalar: A) = 
+    if (scalar == num.zero)
+      SparseVector(dim, values - index)
+    else
+      SparseVector(dim, values updated (index, scalar))
+
   override def equals(o: Any) = o match {
     case that: SparseVector[A] => dim == that.dim &&
                                   (values.keySet ++ that.values.keySet).forall(

@@ -84,4 +84,13 @@ class DenseVectorUnitTest extends UnitTest("DenseVector") {
     for (v <- compDenseVector3) 
       v * (DenseMatrix.identity(3): Matrix[Complex]) shouldEqual v
   }
+
+  it should "allow to get updated" in {
+    val id0 = DenseVector.unit(0, 5): DenseVector[Real]
+    val id1 = DenseVector.unit(1, 5): DenseVector[Real]
+    val id2 = DenseVector.unit(2, 5): DenseVector[Real]
+    val id3 = DenseVector.unit(3, 5): DenseVector[Real]
+    val id4 = DenseVector.unit(4, 5): DenseVector[Real]
+    id0 + id1 shouldEqual id0.updated(1, Real(1))
+  }
 }

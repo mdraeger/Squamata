@@ -76,6 +76,11 @@ case class DenseMatrix[A <: Field[A]] (private val rows: scala.collection.immuta
 
   def scaleBy(scalar: A) = new DenseMatrix(rows map (v => v.scaleBy(scalar)))
 
+  def updated(index: Int, vector: Vector[A]) = vector match {
+    case v: DenseVector[A] => DenseMatrix(rows updated (index, v))
+    case _ => throw new IllegalArgumentException("Can only place DenseVector[A] inside DenseMatrix[A]")
+  }
+
   override def equals(o: Any) = o match {
     case that: Matrix[A] => dim == that.dim &&
                             (0 until dim).forall(index => this(index) == that(index))

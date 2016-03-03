@@ -84,5 +84,17 @@ class SparseVectorUnitTest extends UnitTest("SparseVector") {
   }
 
   it should "remain unchanged when multiplied by an identity matrix" in {
+    val identity = SparseMatrix.identity(10): SparseMatrix[Complex]
+    for (v <- compSparseVector10)
+      v * identity shouldEqual v
+  }
+
+  it should "allow to get updated" in {
+    val id0 = SparseVector.unit(0, 5): SparseVector[Real]
+    val id1 = SparseVector.unit(1, 5): SparseVector[Real]
+    val id2 = SparseVector.unit(2, 5): SparseVector[Real]
+    val id3 = SparseVector.unit(3, 5): SparseVector[Real]
+    val id4 = SparseVector.unit(4, 5): SparseVector[Real]
+    id0 + id1 shouldEqual id0.updated(1, Real(1))
   }
 }

@@ -67,6 +67,12 @@ case class SparseMatrix[A <: Field[A]] (val dim: Int, private val rows: Map[Int,
 
   def scaleBy(scalar: A) = SparseMatrix(dim, rows.mapValues (v => v.scaleBy(scalar)))
 
+  def updated(index: Int, vector: Vector[A]) = vector match {
+    case v: SparseVector[A] => if (v == sparseZeroVector) SparseMatrix(dim, rows - index)
+                               else SparseMatrix(dim, rows updated (index, v))
+    case _ => throw new IllegalArgumentException("Can only place SparseVector[A] inside SparseMatrix[A]")
+  }
+
   override def equals(o: Any) = o match {
     case that: SparseMatrix[A] => dim == that.dim &&
                                   (rows.keySet ++ that.rows.keySet).forall(
