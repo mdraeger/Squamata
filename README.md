@@ -29,3 +29,9 @@ When you construct a sparse matrix, this also applies and you only need to speci
 
 Other than complex numbers in the example above, implementations for real numbers, rationals, and the GF(2) 
 are available right now.
+
+## Examples
+### Hill Cipher
+In the package `org.draegisoft.squamata.examples.hill` you find an example of using 
+the field GF(2^16) for the implementation of a [Hill cipher](https://en.wikipedia.org/wiki/Hill_cipher).
+The implementation of the number field GF(2^16) is part of the package.
