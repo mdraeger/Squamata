@@ -98,7 +98,7 @@ case class SparseMatrix[A <: Field[A]] (val dim: Int, private val rows: Map[Int,
     case _ => false
   }
 
-  override def toString() = rows.mkString("[", ", ", "]")
+  override def toString() = rows.mkString("[", "\n", "]")
 }
 
 object SparseMatrix {

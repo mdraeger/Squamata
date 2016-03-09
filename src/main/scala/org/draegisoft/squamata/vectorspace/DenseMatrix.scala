@@ -97,7 +97,7 @@ case class DenseMatrix[A <: Field[A]] (private val rows: scala.collection.immuta
     case _ => false
   }
 
-  override def toString() = rows.mkString("[", ", ", "]")
+  override def toString() = rows.mkString("[", "\n", "]")
 }
 
 object DenseMatrix {

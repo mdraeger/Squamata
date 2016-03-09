@@ -20,20 +20,23 @@ import org.draegisoft.squamata.field.Field
 
 case class GF65536(val value: Int) extends Field[GF65536] {
   require(value < 65536, "the value cannot exceed the value 65536")
+  private val v = if (value < 0) -value else value
   private val p = 0x1100b // x^16 + x^12 + x^3 + x + 1 : the irreducible polynomial
   private val field = 0x10000 / 2 // the basis of this particular field 2^(16 - 1)
 
+  def intValue: Int = v
+
   def +(that: GF65536) = {
-    new GF65536(value ^ that.value)
+    new GF65536(v ^ that.v)
   }
   def -(that: GF65536) = this + -that
-  def *(that: GF65536) = new GF65536(gmul(value, that.value, p, field))
+  def *(that: GF65536) = new GF65536(gmul(v, that.v, p, field))
   def /(that: GF65536) = this * that.inv
 
   def unary_+ = this
   def inv = {
-    require(value != 0, "The denominator must not be zero!")
-    GF65536(inverse(value, p))
+    require(v != 0, "The denominator must not be zero!")
+    GF65536(inverse(v, p))
   }
   def unary_- = this
 
@@ -41,11 +44,11 @@ case class GF65536(val value: Int) extends Field[GF65536] {
   def one = new GF65536(1)
 
   override def equals(o: Any) = o match {
-    case that: GF65536 => value == that.value
+    case that: GF65536 => v == that.v
     case _ => false
   }
 
-  override def toString() = value.toString
+  override def toString() = v.toString
 }
 
 object GF65536 {
